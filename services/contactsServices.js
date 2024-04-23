@@ -2,16 +2,16 @@ import fs from "fs/promises";
 import { nanoid } from "nanoid";
 import path from "path";
 
-const contactsPath = path.resolve("db", "contact.json");
+const contactsPath = path.resolve("/db", ".contacts.json");
 
 async function listContacts() {
-  const data = await fs.readFile(contactsPath);
+  const data = await fs.readFile(contactsPath, "utf-8");
   return JSON.parse(data);
 }
 
 async function getContactById(contactId) {
   const contacts = await listContacts();
-  const result = contacts.findIndex((item) => item.contactId === contactId);
+  const index = contacts.findIndex((item) => item.contactId === contactId);
   if (index < 0) {
     return null;
   }
@@ -32,7 +32,7 @@ async function removeContact(contactId) {
 async function addContact(data) {
   const contacts = await listContacts();
   const newContacts = {
-    id: nanoid(),
+    contactId: nanoid(),
     ...data,
   };
   contacts.push(newContacts);
@@ -42,7 +42,7 @@ async function addContact(data) {
 
 async function updateContact(contactId, data) {
   const contacts = await listContacts();
-  const index = listContacts.findIndex((e) => e.id === contactId);
+  const index = listContacts.findIndex((e) => e.contactId === contactId);
 
   if (index === -1) {
     return null;
