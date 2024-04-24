@@ -11,7 +11,7 @@ export const getOneContact = async (req, res) => {
   const result = await contactsService.getContactById(id);
 
   if (!result) {
-    res.status(404).json({ message: HttpError(404).message });
+    return res.status(404).json({ message: HttpError(404).message });
   }
   res.json(result);
 };

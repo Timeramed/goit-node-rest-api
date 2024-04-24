@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import { nanoid } from "nanoid";
 import path from "path";
 
-const contactsPath = path.resolve("/db", ".contacts.json");
+const contactsPath = path.resolve("db", "contacts.json");
 
 async function listContacts() {
   const data = await fs.readFile(contactsPath, "utf-8");
@@ -11,7 +11,8 @@ async function listContacts() {
 
 async function getContactById(contactId) {
   const contacts = await listContacts();
-  const index = contacts.findIndex((item) => item.contactId === contactId);
+  const index = contacts.findIndex((item) => item.id === contactId);
+  console.table(index);
   if (index < 0) {
     return null;
   }
@@ -20,7 +21,7 @@ async function getContactById(contactId) {
 }
 async function removeContact(contactId) {
   const contacts = await listContacts();
-  const index = contacts.findIndex((item) => item.contactId === contactId);
+  const index = contacts.findIndex((item) => item.id === contactId);
   if (index === -1) {
     return null;
   }
@@ -32,7 +33,7 @@ async function removeContact(contactId) {
 async function addContact(data) {
   const contacts = await listContacts();
   const newContacts = {
-    contactId: nanoid(),
+    id: nanoid(),
     ...data,
   };
   contacts.push(newContacts);
@@ -42,7 +43,7 @@ async function addContact(data) {
 
 async function updateContact(contactId, data) {
   const contacts = await listContacts();
-  const index = listContacts.findIndex((e) => e.contactId === contactId);
+  const index = listContacts.findIndex((e) => e.id === contactId);
 
   if (index === -1) {
     return null;
