@@ -1,9 +1,18 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import mongoose from "mongoose";
 
 import contactsRouter from "./routes/contactsRouter.js";
 
+mongoose.set("strictQuery", true);
+
+const DB_HOST =
+  "mongodb+srv://Krylov-Artem:H83HDfefBvAaxPzn@atlascluster.eu6shs1.mongodb.net/Contacts_reader?retryWrites=true&w=majority&appName=AtlasCluster";
+mongoose
+  .connect(DB_HOST)
+  .then(() => console.log("finnaly"))
+  .catch((error) => console.log(error.message));
 const app = express();
 
 app.use(morgan("tiny"));
