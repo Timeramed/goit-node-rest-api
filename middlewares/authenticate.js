@@ -21,6 +21,7 @@ export const authenticate = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log();
     next(HttpError(401));
   }
 };
