@@ -7,7 +7,7 @@ dotenv.config();
 
 const { SECRET_KEY } = process.env;
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -24,10 +24,10 @@ export const register = async (req, res) => {
       email: newUser.email,
     });
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message });
+    next(error);
   }
 };
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -42,7 +42,7 @@ export const login = async (req, res) => {
       id: user._id,
     };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-    await User.findByIdAndUpdate(user._id, { token });
+    await User.findByIdAndUpdate(user._id, { token }, { new: true });
 
     res.status(200).json({
       token,
@@ -52,23 +52,23 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (req, res, next) => {
   try {
     const { _id: id } = req.user;
 
-    await User.findByIdAndUpdate(id, { token: null });
+    await User.findByIdAndUpdate(id, { token: null }, { new: true });
 
     res.status(204).json();
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const current = async (req, res) => {
+export const current = async (req, res, next) => {
   try {
     const { email, subscription } = req.user;
 
@@ -77,11 +77,11 @@ export const current = async (req, res) => {
       subscription,
     });
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const updateSubscription = async (req, res) => {
+export const updateSubscription = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { subscription } = req.body;
@@ -96,6 +96,6 @@ export const updateSubscription = async (req, res) => {
       subscription: `Now subscription is ${subscription}`,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
