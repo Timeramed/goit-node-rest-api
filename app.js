@@ -3,8 +3,12 @@ import morgan from "morgan";
 import cors from "cors";
 import { usersRouter } from "./routes/usersRouter.js";
 import contactsRouter from "./routes/contactsRouter.js";
+import path from "path";
 
 const app = express();
+
+const publicDir = path.resolve("public");
+app.use(express.static(publicDir));
 
 app.use(morgan("tiny"));
 app.use(cors());
