@@ -62,7 +62,7 @@ export const verifyEmail = async (req, res) => {
     verificationToken: "",
   });
   res.json({
-    message: "Verification successful",
+    message: "Verification sucessful",
   });
 };
 export const resendVerifyEmail = async (req, res) => {
